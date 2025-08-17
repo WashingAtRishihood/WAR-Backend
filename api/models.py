@@ -8,7 +8,7 @@ class Student(models.Model):
     email = models.EmailField(unique=True)
     enrollment_no = models.CharField(max_length=20, unique=True)
     phone_no = models.CharField(max_length=15)
-    bag_no = models.CharField(max_length=20, unique=True)
+    bag_no = models.CharField(max_length=20, primary_key=True)
     residency_no = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

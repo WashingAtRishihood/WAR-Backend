@@ -6,8 +6,8 @@ class StudentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Student
-        fields = ['id', 'name', 'email', 'enrollment_no', 'phone_no', 'bag_no', 'residency_no', 'created_at']
-        read_only_fields = ['id', 'created_at', 'bag_no']
+        fields = ['bag_no', 'name', 'email', 'enrollment_no', 'phone_no', 'residency_no', 'created_at']
+        read_only_fields = ['created_at']
 
 class WashermanSerializer(serializers.ModelSerializer):
     """Serializer for Washerman model"""
@@ -38,8 +38,21 @@ class StudentSignupSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     email = serializers.EmailField()
     enrollment_no = serializers.CharField(max_length=20)
+    bag_no = serializers.CharField(max_length=20)
     phone_no = serializers.CharField(max_length=15)
     residency_no = serializers.CharField(max_length=20)
+
+    def validate(self, attrs):
+        errors = {}
+        if Student.objects.filter(email=attrs['email']).exists():
+            errors['email'] = 'Email already exists'
+        if Student.objects.filter(enrollment_no=attrs['enrollment_no']).exists():
+            errors['enrollment_no'] = 'Enrollment number already exists'
+        if Student.objects.filter(bag_no=attrs['bag_no']).exists():
+            errors['bag_no'] = 'Bag number already exists'
+        if errors:
+            raise serializers.ValidationError(errors)
+        return attrs
 
 class WashermanSignupSerializer(serializers.Serializer):
     """Serializer for washerman signup"""
