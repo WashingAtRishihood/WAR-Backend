@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from django.db import transaction
 from .models import Student, Washerman, Order
 from .serializers import (
-    StudentSerializer, WashermanSerializer, OrderSerializer,
+    StudentSerializer, UpdateOrderCountSerializer, WashermanSerializer, OrderSerializer,
     StudentSignupSerializer, WashermanSignupSerializer,
     StudentLoginSerializer, WashermanLoginSerializer,
     CreateOrderSerializer, UpdateOrderStatusSerializer
@@ -180,6 +180,26 @@ class UpdateOrderStatusView(APIView):
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                 
+        except Order.DoesNotExist:
+            return Response({'error': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class UpdateOrderCountView(APIView):
+    """Update number_of_clothes for an order"""
+    permission_classes = [AllowAny]
+
+    def put(self, request, order_id):
+        try:
+            order = Order.objects.get(id=order_id)
+            serializer = UpdateOrderCountSerializer(data=request.data)
+            if serializer.is_valid():
+                order.number_of_clothes = serializer.validated_data['number_of_clothes']
+                order.save()
+                return Response({
+                    'message': 'Order count updated successfully',
+                    'order': OrderSerializer(order).data
+                })
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Order.DoesNotExist:
             return Response({'error': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
 

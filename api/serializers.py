@@ -77,3 +77,7 @@ class CreateOrderSerializer(serializers.Serializer):
 class UpdateOrderStatusSerializer(serializers.Serializer):
     """Serializer for updating order status"""
     status = serializers.ChoiceField(choices=Order.STATUS_CHOICES)
+
+class UpdateOrderCountSerializer(serializers.Serializer):
+    """Serializer for updating number_of_clothes on an order"""
+    number_of_clothes = serializers.IntegerField(min_value=1, max_value=50)

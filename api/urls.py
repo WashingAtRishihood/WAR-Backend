@@ -16,6 +16,7 @@ urlpatterns = [
     path('orders/all/', views.AllOrdersView.as_view(), name='all_orders'),
     path('orders/pending/', views.PendingOrdersView.as_view(), name='pending_orders'),
     path('orders/<int:order_id>/status/', views.UpdateOrderStatusView.as_view(), name='update_order_status'),
+    path('orders/<int:order_id>/count/', views.UpdateOrderCountView.as_view(), name='update_order_count'),
     
     # Dashboard endpoints
     path('student/dashboard/<str:bag_no>/', views.StudentDashboardView.as_view(), name='student_dashboard'),
