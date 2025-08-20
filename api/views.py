@@ -20,16 +20,16 @@ class StudentLoginView(APIView):
         serializer = StudentLoginSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
-            enrollment_no = serializer.validated_data['enrollment_no']
+            password = serializer.validated_data['password']
             
             try:
-                student = Student.objects.get(email=email, enrollment_no=enrollment_no)
+                student = Student.objects.get(email=email, password=password)  # In production, use proper password hashing
                 return Response({
                     'message': 'Login successful',
                     'student': StudentSerializer(student).data
                 }, status=status.HTTP_200_OK)
             except Student.DoesNotExist:
-                return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

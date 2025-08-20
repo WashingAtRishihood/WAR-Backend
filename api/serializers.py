@@ -38,6 +38,7 @@ class StudentSignupSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     email = serializers.EmailField()
     enrollment_no = serializers.CharField(max_length=20)
+    password = serializers.CharField(max_length=128, write_only=True)
     bag_no = serializers.CharField(max_length=20)
     phone_no = serializers.CharField(max_length=15)
     residency_no = serializers.CharField(max_length=20)
@@ -62,7 +63,7 @@ class WashermanSignupSerializer(serializers.Serializer):
 class StudentLoginSerializer(serializers.Serializer):
     """Serializer for student login"""
     email = serializers.EmailField()
-    enrollment_no = serializers.CharField(max_length=20)
+    password = serializers.CharField()
 
 class WashermanLoginSerializer(serializers.Serializer):
     """Serializer for washerman login"""
