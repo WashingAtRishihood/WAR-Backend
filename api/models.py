@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 
 class Student(models.Model):
     """Student model for laundry service"""
@@ -8,7 +8,17 @@ class Student(models.Model):
     email = models.EmailField(unique=True)
     enrollment_no = models.CharField(max_length=20, unique=True)
     phone_no = models.CharField(max_length=15)
-    bag_no = models.CharField(max_length=20, primary_key=True)
+    bag_no = models.CharField(
+        max_length=20,
+        primary_key=True,
+        validators=[
+            RegexValidator(
+                regex=r'^[BG]-\d+$',
+                message='Bag number must start with B- or G- followed by numbers',
+                code='invalid_bag_number'
+            )
+        ]
+    )
     residency_no = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

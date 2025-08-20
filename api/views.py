@@ -60,6 +60,13 @@ class StudentSignupView(APIView):
     
     @transaction.atomic
     def post(self, request):
+        email = request.data.get('email', '')
+        if not email.endswith('rishihood.edu.in'):
+            return Response(
+                {'error': 'Please use your Rishihood University email'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
         serializer = StudentSignupSerializer(data=request.data)
         if serializer.is_valid():
             student = Student.objects.create(**serializer.validated_data)
