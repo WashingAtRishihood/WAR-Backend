@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # for the production 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://wardatabase_user:wSu7C1DwVbKFcRZzdmdKAOE4JJQ88nKV@dpg-d2i19df5r7bs73euhdf0-a/wardatabase',
+        default='postgresql://war_database_user:NVjSg76UOoTRqDMiqnEiVMHdEqXS4Mvh@dpg-d35qt9qli9vc738l520g-a.oregon-postgres.render.com/war_database',
         conn_max_age=600
     )
 }
